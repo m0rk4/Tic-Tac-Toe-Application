@@ -20,7 +20,7 @@
             <v-combobox
                 class="tag-item"
                 color="green"
-                v-model="this.tagList"
+                v-model="gameTags"
                 chips
                 multiple
                 readonly
@@ -42,22 +42,23 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex'
 
 export default {
-  props: ['game', 'games', 'enter'],
-  computed: {
-    tagList: function () {
-      var tagList = [];
-      this.game.tags.forEach(t => {
-        tagList.push(t.name);
-      });
-      return tagList;
-    },
+  props: ['game'],
+  data() {
+    return {
+      gameTags: []
+    }
+  },
+  created() {
+    this.game.tags.forEach(t => this.gameTags.push(t.name))
   },
   methods: {
+    ...mapActions(['updateGameAction']),
     enterGame() {
       this.game.playing = true;
-      this.enter(this.game);
+      this.updateGameAction(this.game);
     }
   }
 }

@@ -1,24 +1,27 @@
 package by.mark.gametask5.controller;
 
 import by.mark.gametask5.domain.Game;
+import by.mark.gametask5.dto.GameDto;
 import by.mark.gametask5.repo.GameRepo;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/game")
 public class GameController {
 
     private final GameRepo gameRepo;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public GameController(GameRepo gameRepo) {
+    public GameController(GameRepo gameRepo, ModelMapper modelMapper) {
         this.gameRepo = gameRepo;
+        this.modelMapper = modelMapper;
     }
 
     @GetMapping
@@ -32,10 +35,12 @@ public class GameController {
     }
 
     @PostMapping
-    public Game create(@RequestBody Game game, HttpSession session) {
-        game.setCreator(session.getId());
+    public Game create(@RequestBody GameDto gameDto, HttpSession session) {
+        Game game = convertToEntity(gameDto);
         return gameRepo.save(game);
     }
+
+
 
     @PutMapping("{id}")
     public Game update(
@@ -52,5 +57,12 @@ public class GameController {
     @DeleteMapping("{id}")
     public void delete(@PathVariable("id") Game game) {
         gameRepo.delete(game);
+    }
+
+
+    private Game convertToEntity(GameDto gameDto) {
+        Game game = modelMapper.map(gameDto, Game.class);
+               // TODO
+        return game;
     }
 }

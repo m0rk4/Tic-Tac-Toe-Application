@@ -13,7 +13,7 @@
         </div>
         <v-text-field solo label="Game Title" placeholder="Type your title" :rules="nameRules" v-model="text"/>
         <v-combobox
-            v-model="tags"
+            v-model="chosenTags"
             :items="options"
             :search-input.sync="search"
             chips
@@ -44,19 +44,15 @@
 </template>
 
 <script>
-import {extractTags} from "util.js";
-import {extractNames} from "util.js";
-
+import {mapActions, mapMutations, mapState} from 'vuex'
 
 export default {
-  props: ['games'],
   data() {
     return {
-      valid: true,
       text: '',
-      tags: [],
-      options: extractNames(),
+      chosenTags: [],
       search: null,
+      valid: true,
       nameRules: [
         v => !!v || 'Name is required',
         v => (v && v.length <= 25) || 'Name must be less than 25 characters',
@@ -66,27 +62,25 @@ export default {
       ]
     }
   },
+  computed: mapState(['options']),
   watch: {
     tags(val) {
       if (val.length > 5) {
-        this.$nextTick(() => this.tags.pop())
+        this.$nextTick(() => this.chosenTags.pop())
       }
     },
   },
   methods: {
+    ...mapMutations(['updateOptionsMutation']),
+    ...mapActions(['addGameAction']),
     addGame() {
       if (!this.$refs.form.validate()) return
-      var game = {title: this.text, tags: extractTags(this.tags), playing: false};
-      this.$resource('/game{/id}').save({}, game).then(res => {
-        res.json().then(data => {
-          console.log(data);
-          this.games.push(data);
-          this.text = '';
-          this.tags.splice(0, this.tags.length);
-          this.$refs.form.reset();
-        });
-      });
-
+      this.updateOptionsMutation(this.chosenTags);
+      var game = {title: this.text, tags: this.chosenTags, playing: false}
+      this.addGameAction(game)
+      this.text = ''
+      this.chosenTags = []
+      this.$refs.form.reset()
     },
   }
 }
@@ -96,5 +90,4 @@ export default {
 .tag-input span.v-chip {
   color: darkgreen;
 }
-
 </style>

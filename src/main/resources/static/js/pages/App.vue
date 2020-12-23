@@ -6,11 +6,11 @@
     <v-main>
       <v-container fluid>
         <v-row>
-          <game-form :games="games" :filter-tags="filterTags"/>
+          <game-form/>
         </v-row>
         <v-divider></v-divider>
         <v-container>
-          <games-list :games="games" :filtered-games="filteredGames"/>
+          <games-list/>
         </v-container>
       </v-container>
     </v-main>
@@ -26,47 +26,6 @@ export default {
     GamesList,
     GameForm
   },
-  data() {
-    return {
-      filteredGames: [],
-      filterTags: [],
-    }
-  },
-  created() {
-    this.filteredGames = this.filterGames();
-  },
-  watch: {
-    games() {
-      this.filteredGames = this.filterGames();
-    },
-    filterTags() {
-      this.filteredGames = this.filterGames();
-    }
-  },
-  methods: {
-    filterGames() {
-      let res = [];
-      this.games.forEach(g => {
-        var toAdd = true;
-        for (var i = 0; i < this.filterTags.length; i++) {
-          var fName = this.filterTags[i];
-          var containsCurrTag = false;
-          g.tags.forEach(gt => {
-            if (gt.name === fName) {
-              containsCurrTag = true;
-            }
-          })
-          if (!containsCurrTag) {
-            toAdd = false;
-            break;
-          }
-        }
-        console.log();
-        if (toAdd) res.push(g);
-      })
-      return res;
-    }
-  }
 }
 </script>
 
