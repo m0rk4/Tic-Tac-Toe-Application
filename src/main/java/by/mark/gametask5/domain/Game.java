@@ -24,6 +24,9 @@ public class Game {
     private Long id;
 
     private String title;
+    private String creator;
+    private String opponent;
+    private String code;
 
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
@@ -55,6 +58,30 @@ public class Game {
 
     public LocalDateTime getCreationDate() {
         return creationDate;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
+    public String getOpponent() {
+        return opponent;
+    }
+
+    public void setOpponent(String opponent) {
+        this.opponent = opponent;
     }
 
     public Long getId() {

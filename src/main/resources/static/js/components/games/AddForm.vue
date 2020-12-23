@@ -1,35 +1,46 @@
 <template>
-  <v-form ref="form"
-          v-model="valid"
-          lazy-validation>
-    <v-text-field solo label="Game Title" placeholder="Type your title" :rules="nameRules" v-model="text"/>
-    <v-combobox
-        v-model="tags"
-        :items="options"
-        :search-input.sync="search"
-        chips
-        hide-selected
-        hint="Maximum of 5 tags"
-        label="Add some tags"
-        class="tag-input"
-        multiple
-        solo
-        deletable-chips
-        persistent-hint
-        :rules="tagRules"
-    >
-      <template v-slot:no-data>
-        <v-list-item>
-          <v-list-item-content>
-            <v-list-item-title>
-              No results matching "<strong>{{ search }}</strong>". Press <kbd>enter</kbd> to create a new one
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </template>
-    </v-combobox>
-    <v-btn color="success" @click="addGame" rounded>Create game</v-btn>
-  </v-form>
+  <v-container>
+    <v-card rounded outlined color="#f1f8e9">
+      <v-form ref="form"
+              v-model="valid"
+              lazy-validation
+              class="ma-4">
+        <div
+            :class="[`text-h1`]"
+            class="mb-4"
+        >
+          Create Your Game
+        </div>
+        <v-text-field solo label="Game Title" placeholder="Type your title" :rules="nameRules" v-model="text"/>
+        <v-combobox
+            v-model="tags"
+            :items="options"
+            :search-input.sync="search"
+            chips
+            deletable-chips
+            hide-selected
+            hint="Maximum of 5 tags"
+            label="Add some tags"
+            class="tag-input"
+            multiple
+            solo
+            persistent-hint
+            :rules="tagRules"
+        >
+          <template v-slot:no-data>
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title>
+                  No results matching "<strong>{{ search }}</strong>". Press <kbd>enter</kbd> to create a new one
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </template>
+        </v-combobox>
+        <v-btn color="success" @click="addGame" rounded>Create game</v-btn>
+      </v-form>
+    </v-card>
+  </v-container>
 </template>
 
 <script>
@@ -44,7 +55,7 @@ export default {
       valid: true,
       text: '',
       tags: [],
-      options: extractNames(allTags),
+      options: extractNames(),
       search: null,
       nameRules: [
         v => !!v || 'Name is required',
@@ -68,12 +79,14 @@ export default {
       var game = {title: this.text, tags: extractTags(this.tags), playing: false};
       this.$resource('/game{/id}').save({}, game).then(res => {
         res.json().then(data => {
+          console.log(data);
           this.games.push(data);
           this.text = '';
           this.tags.splice(0, this.tags.length);
-          this.$refs.form.reset()
+          this.$refs.form.reset();
         });
       });
+
     },
   }
 }
@@ -81,7 +94,7 @@ export default {
 
 <style>
 .tag-input span.v-chip {
-  color: green;
+  color: darkgreen;
 }
 
 </style>

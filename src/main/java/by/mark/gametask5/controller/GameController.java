@@ -6,7 +6,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/game")
@@ -30,17 +32,20 @@ public class GameController {
     }
 
     @PostMapping
-    public Game create(@RequestBody Game game) {
+    public Game create(@RequestBody Game game, HttpSession session) {
+        game.setCreator(session.getId());
         return gameRepo.save(game);
     }
 
     @PutMapping("{id}")
     public Game update(
             @PathVariable("id") Game gameFromDb,
-            @RequestBody Game game
+            @RequestBody Game game,
+            HttpSession session
     ) {
         // copy from game -> to gameFromDb ignoring id field
         BeanUtils.copyProperties(game, gameFromDb, "id");
+        gameFromDb.setOpponent(session.getId());
         return gameRepo.save(gameFromDb);
     }
 

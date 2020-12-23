@@ -45,11 +45,13 @@ module.exports = {
                         loader: 'sass-loader',
                         options: {
                             implementation: require('sass'),
-                            indentedSyntax: true
-                        }
-                    }
-                ]
-            }
+                            sassOptions: {
+                                indentedSyntax: true
+                            },
+                        },
+                    },
+                ],
+            },
         ]
     },
     plugins: [

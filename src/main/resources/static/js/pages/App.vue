@@ -1,14 +1,17 @@
 <template>
   <v-app>
     <v-app-bar app>
-      Mastering Spring 2
+      <v-toolbar-title>Mastering Spring</v-toolbar-title>
     </v-app-bar>
     <v-main>
       <v-container fluid>
         <v-row>
           <game-form :games="games" :filter-tags="filterTags"/>
         </v-row>
-        <games-list :games="games" :filtered-games="filteredGames"/>
+        <v-divider></v-divider>
+        <v-container>
+          <games-list :games="games" :filtered-games="filteredGames"/>
+        </v-container>
       </v-container>
     </v-main>
   </v-app>
@@ -25,7 +28,6 @@ export default {
   },
   data() {
     return {
-      games: games,
       filteredGames: [],
       filterTags: [],
     }

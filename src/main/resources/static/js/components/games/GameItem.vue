@@ -1,6 +1,5 @@
 <template>
   <v-container >
-
     <v-card
         class="mx-auto"
         max-width="350"
@@ -30,13 +29,10 @@
           </v-list-item-subtitle>
         </v-list-item-content>
 
-        <v-list-item-avatar v-if="!game.playing" tile size="80" color="green"></v-list-item-avatar>
-        <v-list-item-avatar v-else tile size="80" color="red"></v-list-item-avatar>
-
       </v-list-item>
 
-      <v-card-actions>
-        <v-btn v-if="!game.playing" @click="enterGame" outlined rounded text>
+      <v-card-actions v-if="!game.playing">
+        <v-btn @click="enterGame" color="success" outlined rounded text>
           Enter The Game
         </v-btn>
       </v-card-actions>
@@ -69,6 +65,6 @@ export default {
 
 <style>
 .tag-item span.v-chip {
-  color: green;
+  color: darkgreen;
 }
 </style>
