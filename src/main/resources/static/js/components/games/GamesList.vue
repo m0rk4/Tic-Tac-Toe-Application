@@ -37,12 +37,12 @@ import GameItem from "components/games/GameItem.vue";
 import {mapGetters, mapState} from 'vuex';
 
 export default {
-  components: {
-    GameItem
-  },
   computed: {
     ...mapState(['games']),
     ...mapGetters(['filteredSortedGames'])
+  },
+  components: {
+    GameItem
   }
 }
 </script>

@@ -29,7 +29,7 @@ export default new Vuex.Store({
                 ...state.filterTags,
                 newTag
             ]
-            state.filteredGames = getFilteredGames(state.games, state.filterTags)
+            state.filteredGames = [...getFilteredGames(state.games, state.filterTags)]
         },
         removeFilterTagsMutation(state, updatedTags) {
             for (var i = 0; i < state.filterTags.length; i++) {
@@ -41,26 +41,29 @@ export default new Vuex.Store({
                     break;
                 }
             }
-            state.filteredGames = getFilteredGames(state.games, state.filterTags)
+            state.filteredGames = [...getFilteredGames(state.games, state.filterTags)]
         },
         addGameMutation(state, game) {
             state.games = [
                 ...state.games,
                 game
             ]
-            state.filteredGames = getFilteredGames(state.games, state.filterTags)
+            state.filteredGames = [...getFilteredGames(state.games, state.filterTags)]
         },
         updateGameMutation(state, game) {
             const updateIndex = state.games.findIndex(g => g.id === game.id)
+            state.games.forEach(g => console.log(g));
+            console.log(game)
             state.games = [
                 ...state.games.splice(0, updateIndex),
                 game,
                 ...state.games.splice(updateIndex + 1)
             ]
+            state.games.forEach(g => console.log(g));
         },
     },
     actions: {
-        addGameAction({commit, state}, game) {
+        addGameAction({commit}, game) {
             gameApi.add(game).then(result => {
                 result.json().then(data => {
                     commit('addGameMutation', data)
@@ -70,6 +73,7 @@ export default new Vuex.Store({
         updateGameAction({commit}, game) {
             gameApi.update(game).then(result => {
                result.json().then(data => {
+                   console.log(data)
                    commit('updateGameMutation', data)
                })
             })

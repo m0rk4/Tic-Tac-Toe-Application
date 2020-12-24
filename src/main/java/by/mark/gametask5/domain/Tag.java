@@ -10,7 +10,6 @@ import java.util.Set;
 
 @Entity
 @Table
-@ToString
 @EqualsAndHashCode(of = {"id"})
 public class Tag {
 

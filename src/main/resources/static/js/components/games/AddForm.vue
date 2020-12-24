@@ -76,7 +76,7 @@ export default {
     addGame() {
       if (!this.$refs.form.validate()) return
       this.updateOptionsMutation(this.chosenTags);
-      var game = {title: this.text, tags: this.chosenTags, playing: false}
+      var game = {title: this.text, tags: this.chosenTags, playing: false};
       this.addGameAction(game)
       this.text = ''
       this.chosenTags = []

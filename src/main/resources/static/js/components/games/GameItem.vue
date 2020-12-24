@@ -52,12 +52,13 @@ export default {
     }
   },
   created() {
-    this.game.tags.forEach(t => this.gameTags.push(t.name))
+    this.game.tags.forEach(t => this.gameTags.push(t))
   },
   methods: {
     ...mapActions(['updateGameAction']),
     enterGame() {
-      this.game.playing = true;
+      this.game.isPlaying = true;
+      console.log(`Game ${this.game}`)
       this.updateGameAction(this.game);
     }
   }

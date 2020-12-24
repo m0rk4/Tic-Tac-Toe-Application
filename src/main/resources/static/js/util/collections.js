@@ -1,4 +1,6 @@
 export function getFilteredGames(games, filterTags) {
+    console.log(games)
+    console.log(filterTags)
     let res = [];
     games.forEach(g => {
         var toAdd = true;
@@ -17,6 +19,7 @@ export function getFilteredGames(games, filterTags) {
         }
         if (toAdd) res.push(g);
     })
+    console.log(res)
     return res
 }
 

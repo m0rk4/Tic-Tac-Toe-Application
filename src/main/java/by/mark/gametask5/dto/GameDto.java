@@ -1,14 +1,19 @@
 package by.mark.gametask5.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
+@ToString
+@EqualsAndHashCode
 public class GameDto {
+    @JsonProperty("id")
+    private Long id;
     @JsonProperty("title")
     private String title;
     @JsonProperty("isPlaying")
