@@ -3,12 +3,11 @@ package by.mark.gametask5.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
 @Entity
 @Table
@@ -19,10 +18,11 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @JsonProperty("gameState")
+    private String gameState;
     private String title;
     private String creator;
     private String opponent;
-    private String code;
 
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
@@ -31,9 +31,12 @@ public class Game {
             inverseJoinColumns = {@JoinColumn(name = "tag_id")}
     )
     @JsonProperty("tags")
-    private Set<Tag> tags = new HashSet<>();
+    private List<Tag> tags = new LinkedList<>();
 
+    @JsonProperty("isPlaying")
     private boolean isPlaying;
+    @JsonProperty("isCreatorChoice")
+    private boolean isCreatorChoice;
 
     @Column(updatable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
@@ -48,6 +51,22 @@ public class Game {
         return title;
     }
 
+    public String getGameState() {
+        return gameState;
+    }
+
+    public void setGameState(String gameState) {
+        this.gameState = gameState;
+    }
+
+    public boolean isCreatorChoice() {
+        return isCreatorChoice;
+    }
+
+    public void setCreatorChoice(boolean creatorChoice) {
+        isCreatorChoice = creatorChoice;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -56,20 +75,12 @@ public class Game {
         return creationDate;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public Set<Tag> getTags() {
+    public List<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(Set<Tag> tags) {
+    public void setTags(List<Tag> tags) {
         this.tags = tags;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public String getCreator() {

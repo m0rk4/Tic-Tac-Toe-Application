@@ -6,15 +6,15 @@
               lazy-validation
               class="ma-4">
         <div
-            :class="[`text-h1`]"
+            :class="[`text-h2`]"
             class="mb-4"
         >
-          Create Your Game
+          Your Game
         </div>
         <v-text-field solo label="Game Title" placeholder="Type your title" :rules="nameRules" v-model="text"/>
         <v-combobox
             v-model="chosenTags"
-            :items="options"
+            :items="optionsTags"
             :search-input.sync="search"
             chips
             deletable-chips
@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import {mapActions, mapMutations, mapState} from 'vuex'
+import {mapActions, mapMutations, mapGetters} from 'vuex'
 
 export default {
   data() {
@@ -62,7 +62,7 @@ export default {
       ]
     }
   },
-  computed: mapState(['options']),
+  computed: mapGetters(['optionsTags']),
   watch: {
     tags(val) {
       if (val.length > 5) {
@@ -76,7 +76,13 @@ export default {
     addGame() {
       if (!this.$refs.form.validate()) return
       this.updateOptionsMutation(this.chosenTags);
-      var game = {title: this.text, tags: this.chosenTags, playing: false};
+      var game = {
+        title: this.text,
+        tags: this.chosenTags.map(s => {return {name: s}}),
+        isPlaying: false,
+        isCreatorChoice: true,
+        gameState: '          '
+      };
       this.addGameAction(game)
       this.text = ''
       this.chosenTags = []

@@ -5,27 +5,23 @@
     </v-app-bar>
     <v-main>
       <v-container fluid>
-        <v-row>
-          <game-form/>
-        </v-row>
-        <v-divider></v-divider>
-        <v-container>
-          <games-list/>
-        </v-container>
+        <router-view></router-view>
       </v-container>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import GamesList from "components/games/GamesList.vue";
-import GameForm from "components/games/GameForm.vue";
+import {addHandler} from "util/ws.js";
+import {mapMutations} from 'vuex'
 
 export default {
-  components: {
-    GamesList,
-    GameForm
+  created() {
+    addHandler(data => {
+      this.getGameMutation(data)
+    })
   },
+  methods: mapMutations(['getGameMutation'])
 }
 </script>
 

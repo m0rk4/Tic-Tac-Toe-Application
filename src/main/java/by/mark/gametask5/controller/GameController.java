@@ -1,11 +1,12 @@
 package by.mark.gametask5.controller;
 
-import by.mark.gametask5.service.DtoService;
 import by.mark.gametask5.domain.Game;
-import by.mark.gametask5.dto.GameDto;
+import by.mark.gametask5.domain.Message;
 import by.mark.gametask5.repo.GameRepo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -16,12 +17,11 @@ import java.util.List;
 public class GameController {
 
     private final GameRepo gameRepo;
-    private final DtoService dtoService;
+
 
     @Autowired
-    public GameController(GameRepo gameRepo,  DtoService dtoService) {
+    public GameController(GameRepo gameRepo) {
         this.gameRepo = gameRepo;
-        this.dtoService = dtoService;
     }
 
     @GetMapping
@@ -35,24 +35,22 @@ public class GameController {
     }
 
     @PostMapping
-    public GameDto create(@RequestBody GameDto gameDto, HttpSession session) {
-        Game game = dtoService.convertToEntity(gameDto);
-        gameRepo.save(game);
-        return dtoService.convertToDto(game);
+    public Game create(@RequestBody Game game, HttpSession session) {
+        game.setCreator(session.getId());
+        return gameRepo.save(game);
     }
 
 
     @PutMapping("{id}")
-    public GameDto update(
+    public Game update(
             @PathVariable("id") Game gameFromDb,
-            @RequestBody GameDto game,
+            @RequestBody Game game,
             HttpSession session
     ) {
         // copy from game -> to gameFromDb ignoring id field
         BeanUtils.copyProperties(game, gameFromDb, "id");
         gameFromDb.setOpponent(session.getId());
-        gameRepo.save(gameFromDb);
-        return dtoService.convertToDto(gameFromDb);
+        return gameRepo.save(gameFromDb);
     }
 
     @DeleteMapping("{id}")
@@ -60,4 +58,16 @@ public class GameController {
         gameRepo.delete(game);
     }
 
+    @MessageMapping("/changeGame/{id}")
+    @SendTo("/topic/gamestates/{id}")
+    public Game change(Game game) {
+        return gameRepo.save(game);
+    }
+
+    @MessageMapping("/showAlert/{id}")
+    @SendTo("/topic/alert/{id}")
+    public Message showAlert(Message message) {
+        gameRepo.deleteById(message.getId());
+        return message;
+    }
 }

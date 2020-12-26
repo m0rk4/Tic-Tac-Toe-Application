@@ -2,12 +2,12 @@
   <v-container>
     <v-card rounded outlined color="#f1f8e9">
       <v-form class="ma-4">
-        <div class="mb-4" :class="[`text-h1`]">
-          Filter Existing Games
+        <div class="mb-4" :class="[`text-h2`]">
+          Filter
         </div>
         <v-combobox
             v-model="selectedTags"
-            :items="options"
+            :items="optionsTags"
             :search-input.sync="search"
             hide-selected
             class="tag-filter"
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import {mapState, mapMutations} from 'vuex'
+import {mapState, mapMutations, mapGetters} from 'vuex'
 
 export default {
   data() {
@@ -44,12 +44,15 @@ export default {
       search: null,
     }
   },
-  computed: mapState(['filterTags', 'options']),
+  computed: {
+    ...mapState(['filterTags']),
+    ...mapGetters(['optionsTags'])
+  },
   methods: {
     ...mapMutations(['addFilterTagsMutation', 'removeFilterTagsMutation', 'addGameMutation']),
     onTagsChanged(updatedTags) {
       if (this.filterTags.length < updatedTags.length) {
-        this.addFilterTagsMutation(updatedTags[updatedTags.length - 1])
+        this.addFilterTagsMutation({id: null, name :updatedTags[updatedTags.length - 1]})
       } else {
         this.removeFilterTagsMutation(updatedTags)
       }

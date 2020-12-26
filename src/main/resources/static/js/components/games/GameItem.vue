@@ -11,9 +11,9 @@
             {{ game.creationDate }}
           </div>
           <v-list-item-title class="headline mb-1">
-            {{ game.title }}
+            <a :href="/lobby/ + game.id">{{ game.title }}</a>
           </v-list-item-title>
-          <v-list-item-subtitle v-if="!game.playing">Status: Waiting for opponent</v-list-item-subtitle>
+          <v-list-item-subtitle v-if="!game.isPlaying">Status: Waiting for opponent</v-list-item-subtitle>
           <v-list-item-subtitle v-else>Status: Playing</v-list-item-subtitle>
 
           <v-list-item-subtitle>
@@ -31,7 +31,7 @@
 
       </v-list-item>
 
-      <v-card-actions v-if="!game.playing">
+      <v-card-actions v-if="!game.isPlaying && (currSession !== game.creator)">
         <v-btn @click="enterGame" color="success" outlined rounded text>
           Enter The Game
         </v-btn>
@@ -48,17 +48,17 @@ export default {
   props: ['game'],
   data() {
     return {
-      gameTags: []
+      gameTags: [],
+      currSession: frontData.currSession
     }
   },
   created() {
-    this.game.tags.forEach(t => this.gameTags.push(t))
+    this.game.tags.forEach(t => this.gameTags.push('#' + t.name))
   },
   methods: {
     ...mapActions(['updateGameAction']),
     enterGame() {
       this.game.isPlaying = true;
-      console.log(`Game ${this.game}`)
       this.updateGameAction(this.game);
     }
   }
