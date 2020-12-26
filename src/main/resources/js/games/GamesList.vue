@@ -35,8 +35,8 @@
 </template>
 
 <script>
-import GameItem from "components/games/GameItem.vue";
-import GameForm from "components/games/GameForm.vue";
+import GameItem from "games/GameItem.vue";
+import GameForm from "games/GameForm.vue";
 import {mapGetters} from 'vuex';
 
 export default {

@@ -20,7 +20,7 @@ public class MainController {
     private final TagRepo tagRepo;
     private final GameRepo gameRepo;
 
-    @Value("${spring.profiles.active}")
+    @Value("${spring.profiles.active:prod}")
     private String profile;
 
     @Autowired

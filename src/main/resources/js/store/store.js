@@ -2,9 +2,8 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import gameApi from 'api/gameApi.js'
 import {getFilteredGames} from 'util/collections'
-import {getNewTags} from 'util/collections'
+import {getNewTags} from 'util/collections';
 import router from "router/router.js";
-import {connect} from 'util/ws.js'
 
 Vue.use(Vuex);
 

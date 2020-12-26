@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import AddForm from "components/games/AddForm.vue"
-import FilterForm from "components/games/FilterForm.vue";
+import AddForm from "games/AddForm.vue"
+import FilterForm from "games/FilterForm.vue";
 
 export default {
   components: {AddForm, FilterForm},

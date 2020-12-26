@@ -35,7 +35,7 @@
 import {mapMutations, mapGetters, mapState} from "vuex"
 import {sendGame, sendAlert, disconnect, connect} from "util/ws.js";
 import {checkWin} from "util/collections.js";
-import DialogForm from "components/games/DialogForm.vue";
+import DialogForm from "games/DialogForm.vue";
 
 export default {
   components: {

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import GamesList from "components/games/GamesList.vue"
+import GamesList from "games/GamesList.vue"
 import GameBoard from "pages/GameBoard.vue";
 
 Vue.use(VueRouter)
