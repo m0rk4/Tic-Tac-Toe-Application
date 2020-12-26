@@ -42,6 +42,7 @@ export default {
     dialogClicked() {
       this.dialog = false;
       this.$router.push({ path: '/' })
+      disconnect()
     }
   },
   created() {
@@ -50,7 +51,6 @@ export default {
       this.text = data.text;
       this.dialog = true;
       this.removeGameMutation(data.id)
-      disconnect()
     })
   }
 }

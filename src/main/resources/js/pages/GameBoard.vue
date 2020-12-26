@@ -93,7 +93,6 @@ export default {
       var gameToSave = JSON.parse(JSON.stringify(this.lobby))
       gameToSave.isCreatorChoice = !(this.lobby.isCreatorChoice)
       gameToSave.gameState = serializedNewGameState
-      console.log(`What - ${winCheck}`)
       sendGame(gameToSave)
       if (winCheck !== 'n') {
         var text = this.isAdmin ? 'Winner: Creator with \'X\'' :
