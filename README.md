@@ -1,4 +1,4 @@
-# Task5Itr
+# Tic-Tac-Toe
 Simple Tic-Tac-Toe Application
 
 Using Vue.js and Spring Boot.
